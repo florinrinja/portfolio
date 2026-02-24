@@ -1,0 +1,71 @@
+'use client'
+
+import { useEffect, useRef } from 'react'
+import styles from './Works.module.css'
+
+const works = [
+  {
+    number: '01',
+    category: 'Web Application',
+    title: 'Project Alpha',
+    description: 'A comprehensive dashboard application built with React and Node.js, featuring real-time data visualization and intuitive user experience.'
+  },
+  {
+    number: '02',
+    category: 'E-Commerce',
+    title: 'Shop Platform',
+    description: 'Modern e-commerce platform with seamless checkout experience, inventory management, and responsive design.'
+  },
+  {
+    number: '03',
+    category: 'Portfolio',
+    title: 'Creative Portfolio',
+    description: 'Minimalist portfolio website showcasing photography and creative work with smooth animations and elegant typography.'
+  }
+]
+
+export default function WorksOne() {
+  const sectionRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.querySelectorAll('.fade-in').forEach(el => {
+              el.classList.add('visible')
+            })
+          }
+        })
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    )
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current)
+    }
+
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <section id="works" className={styles.section} ref={sectionRef}>
+      <div className={styles.sectionHeader}>
+        <span className={styles.sectionNumber}>05</span>
+        <h2 className={styles.sectionTitle}>Featured Works</h2>
+      </div>
+      <div className={styles.worksGrid}>
+        {works.map((work, index) => (
+          <div key={index} className={`${styles.workCard} fade-in`}>
+            <div className={styles.workImage}>{work.number}</div>
+            <div className={styles.workContent}>
+              <div className={styles.workCategory}>{work.category}</div>
+              <h3 className={styles.workTitle}>{work.title}</h3>
+              <p className={styles.workDescription}>{work.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
