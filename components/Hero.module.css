@@ -18,7 +18,6 @@
   margin-bottom: 2rem;
   letter-spacing: -0.03em;
   animation: fadeInUp 0.8s ease forwards;
-  opacity: 0;
 }
 
 .heroContent p {
@@ -27,7 +26,6 @@
   max-width: 600px;
   line-height: 1.8;
   animation: fadeInUp 0.8s ease 0.2s forwards;
-  opacity: 0;
 }
 
 @media (max-width: 768px) {
