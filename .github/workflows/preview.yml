@@ -1,0 +1,51 @@
+name: Preview Deployment
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Build Docker image
+        run: docker build -t portfolio-pr-${{ github.event.pull_request.number }} .
+
+      - name: Save Docker image
+        run: docker save portfolio-pr-${{ github.event.pull_request.number }} > /tmp/portfolio-pr-${{ github.event.pull_request.number }}.tar
+
+      - name: Copy image to VPS
+        run: scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no /tmp/portfolio-pr-${{ github.event.pull_request.number }}.tar deploy@${{ secrets.DEPLOY_HOST }}:/tmp/
+
+      - name: Deploy to VPS
+        run: |
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no deploy@${{ secrets.DEPLOY_HOST }} "
+            docker stop portfolio-pr-${{ github.event.pull_request.number }} 2>/dev/null || true
+            docker rm portfolio-pr-${{ github.event.pull_request.number }} 2>/dev/null || true
+            docker load < /tmp/portfolio-pr-${{ github.event.pull_request.number }}.tar
+            docker run -d \
+              -p 127.0.0.1:40${{ github.event.pull_request.number }}:3000 \
+              --name portfolio-pr-${{ github.event.pull_request.number }} \
+              portfolio-pr-${{ github.event.pull_request.number }}
+            rm -f /tmp/portfolio-pr-${{ github.event.pull_request.number }}.tar
+          "
+      - name: Comment PR with preview URL
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '🚀 Preview deployed at https://pr-${{ github.event.pull_request.number }}.florinrinja.website'
+            })

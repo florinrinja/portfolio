@@ -1,0 +1,43 @@
+name: Production Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Build Docker image
+        run: docker build -t portfolio-prod .
+
+      - name: Save Docker image
+        run: docker save portfolio-prod > /tmp/portfolio-prod.tar
+
+      - name: Copy image to VPS
+        run: scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no /tmp/portfolio-prod.tar deploy@${{ secrets.DEPLOY_HOST }}:/tmp/
+
+      - name: Deploy to VPS
+        run: |
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no deploy@${{ secrets.DEPLOY_HOST }} "
+            docker stop portfolio-prod 2>/dev/null || true
+            docker rm portfolio-prod 2>/dev/null || true
+            docker load < /tmp/portfolio-prod.tar
+            docker run -d \
+              -p 127.0.0.1:3000:3000 \
+              --name portfolio-prod \
+              portfolio-prod
+            docker image prune -f
+            rm -f /tmp/portfolio-prod.tar
+          "
