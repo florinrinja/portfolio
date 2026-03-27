@@ -33,7 +33,7 @@ export default function Navigation() {
 
   return (
     <nav className={styles.nav}>
-      <div className={styles.logo}>Portfolio.</div>
+      <div className={styles.logo}>Florin RINJA</div>
       <ul className={styles.navLinks}>
         <li><a href="#about" onClick={(e) => scrollToSection(e, 'about')}>About</a></li>
         <li><a href="#skills" onClick={(e) => scrollToSection(e, 'skills')}>Skills</a></li>
