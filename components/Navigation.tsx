@@ -1,34 +1,34 @@
-'use client'
+'use client';
 
-import { useEffect, useState } from 'react'
-import styles from './Navigation.module.css'
+import { useEffect, useState } from 'react';
+import styles from './Navigation.module.css';
 
 export default function Navigation() {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light')
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
     // Check for saved theme preference or default to system preference
-    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null
-    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-    const initialTheme = savedTheme || systemTheme
-    setTheme(initialTheme)
-    document.documentElement.setAttribute('data-theme', initialTheme)
-  }, [])
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    const initialTheme = savedTheme || systemTheme;
+    setTheme(initialTheme);
+    document.documentElement.setAttribute('data-theme', initialTheme);
+  }, []);
 
   const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light'
-    setTheme(newTheme)
-    document.documentElement.setAttribute('data-theme', newTheme)
-    localStorage.setItem('theme', newTheme)
-  }
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+  };
 
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-    e.preventDefault()
-    const element = document.getElementById(id)
+    e.preventDefault();
+    const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  }
+  };
 
   return (
     <nav className={styles.nav}>
@@ -58,5 +58,5 @@ export default function Navigation() {
         </li>
       </ul>
     </nav>
-  )
-}
+  );
+};
