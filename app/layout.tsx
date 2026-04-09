@@ -1,24 +1,27 @@
-import type { Metadata } from 'next'
-import { Work_Sans, DM_Serif_Display } from 'next/font/google'
-import './globals.css'
+import type { Metadata } from 'next';
+import { Work_Sans, DM_Serif_Display } from 'next/font/google';
+import './globals.css';
 
 const workSans = Work_Sans({ 
   subsets: ['latin'],
   weight: ['300', '400', '500', '600'],
   variable: '--font-work-sans'
-})
+});
 
 const dmSerif = DM_Serif_Display({ 
   subsets: ['latin'],
   weight: ['400'],
   style: ['normal', 'italic'],
   variable: '--font-dm-serif'
-})
+});
 
 export const metadata: Metadata = {
-  title: 'Portfolio — Your Name',
+  title: 'Portfolio — Florin RINJA',
   description: 'Creative Developer & Designer',
-}
+  icons: {
+    icon: '/favicon.svg',
+  },
+};
 
 export default function RootLayout({
   children,
@@ -31,5 +34,5 @@ export default function RootLayout({
         {children}
       </body>
     </html>
-  )
-}
+  );
+};
