@@ -60,7 +60,7 @@
 .downloadCv {
   border: 1px solid currentColor;
   padding: 0.3rem 0.8rem;
-  border-radius: 4px;
+  border-radius: 1rem;
   font-size: 0.85rem;
   white-space: nowrap;
   transition: background 0.2s, color 0.2s;
@@ -97,13 +97,108 @@
   transform: translateX(24px);
 }
 
+/* ─── Hamburger ─────────────────────────────────────────── */
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+  padding: 4px;
+  background: none;
+  border: none;
+}
+
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.hamburger.open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ─── Mobile controls (toggle + hamburger in the bar) ───── */
+
+.mobileControls {
+  display: none;
+}
+
+/* ─── Mobile drawer ─────────────────────────────────────── */
+
+.mobileMenu {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--bg-primary);
+  z-index: 999;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.mobileMenu.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.mobileMenu a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 1.4rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  transition: color 0.2s ease;
+}
+
+.mobileMenu a:hover {
+  color: var(--text-primary);
+}
+
+.mobileMenu .downloadCv {
+  font-size: 1rem;
+}
+
+/* ─── Responsive ─────────────────────────────────────────── */
+
 @media (max-width: 768px) {
   .nav {
-    padding: 1.5rem 2rem;
+    padding: 1.25rem 1.5rem;
   }
 
   .navLinks {
-    gap: 1.5rem;
-    font-size: 0.85rem;
+    display: none;
+  }
+
+  .mobileControls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .mobileMenu {
+    display: flex;
   }
 }

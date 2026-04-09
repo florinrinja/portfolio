@@ -44,7 +44,6 @@
 .timelineItem {
   position: relative;
   margin-bottom: 4rem;
-  padding-left: 2rem;
 }
 
 .timelineItem::before {
@@ -84,7 +83,7 @@
 
 @media (max-width: 768px) {
   .section {
-    padding: 4rem 2rem;
+    padding: 5rem 1rem 5rem 2rem;
   }
 
   .timeline {
