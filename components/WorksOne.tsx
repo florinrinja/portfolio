@@ -3,25 +3,36 @@
 import { useEffect, useRef } from 'react'
 import styles from './Works.module.css'
 
-const works = [
+type Work = {
+  number: string
+  category: string
+  title: string
+  description: string
+  url?: string
+  previewImage?: string
+}
+
+const works: Work[] = [
   {
     number: '01',
-    category: 'Web Application',
-    title: 'Project Alpha',
-    description: 'A comprehensive dashboard application built with React and Node.js, featuring real-time data visualization and intuitive user experience.'
+    category: 'Weather Application',
+    title: 'Weather App',
+    description: 'A weather application showing current conditions and forecasts, built with React.',
+    url: '/apps/weather',
+    previewImage: '/works/weather-preview.png',
   },
   {
     number: '02',
     category: 'E-Commerce',
     title: 'Shop Platform',
-    description: 'Modern e-commerce platform with seamless checkout experience, inventory management, and responsive design.'
+    description: 'Modern e-commerce platform with seamless checkout experience, inventory management, and responsive design.',
   },
   {
     number: '03',
     category: 'Portfolio',
     title: 'Creative Portfolio',
-    description: 'Minimalist portfolio website showcasing photography and creative work with smooth animations and elegant typography.'
-  }
+    description: 'Minimalist portfolio website showcasing photography and creative work with smooth animations and elegant typography.',
+  },
 ]
 
 export default function WorksOne() {
@@ -41,10 +52,7 @@ export default function WorksOne() {
       { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
     )
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
+    if (sectionRef.current) observer.observe(sectionRef.current)
     return () => observer.disconnect()
   }, [])
 
@@ -55,16 +63,38 @@ export default function WorksOne() {
         <h2 className={styles.sectionTitle}>Featured Works</h2>
       </div>
       <div className={styles.worksGrid}>
-        {works.map((work, index) => (
-          <div key={index} className={`${styles.workCard} fade-in`}>
-            <div className={styles.workImage}>{work.number}</div>
-            <div className={styles.workContent}>
-              <div className={styles.workCategory}>{work.category}</div>
-              <h3 className={styles.workTitle}>{work.title}</h3>
-              <p className={styles.workDescription}>{work.description}</p>
+        {works.map((work, index) => {
+          const imageArea = (
+            <div className={styles.workImage}>
+              {work.previewImage ? (
+                <img
+                  src={work.previewImage}
+                  alt={`${work.title} preview`}
+                  className={styles.workImagePreview}
+                />
+              ) : (
+                work.number
+              )}
             </div>
-          </div>
-        ))}
+          )
+
+          return (
+            <div key={index} className={`${styles.workCard} fade-in`}>
+              {work.url ? (
+                <a href={work.url} className={styles.workImageLink} target="_blank" rel="noopener noreferrer">
+                  {imageArea}
+                </a>
+              ) : (
+                imageArea
+              )}
+              <div className={styles.workContent}>
+                <div className={styles.workCategory}>{work.category}</div>
+                <h3 className={styles.workTitle}>{work.title}</h3>
+                <p className={styles.workDescription}>{work.description}</p>
+              </div>
+            </div>
+          )
+        })}
       </div>
     </section>
   )
