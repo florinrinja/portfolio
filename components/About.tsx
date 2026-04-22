@@ -42,15 +42,15 @@ export default function About() {
         <div className={styles.aboutStats}>
           <div className={`${styles.statItem} fade-in`}>
             <div className={styles.statLabel}>Years Experience</div>
-            <div className={styles.statValue}>5+</div>
+            <div className={styles.statValue}>6 +</div>
           </div>
           <div className={`${styles.statItem} fade-in`}>
             <div className={styles.statLabel}>Projects Completed</div>
-            <div className={styles.statValue}>50+</div>
+            <div className={styles.statValue}>50 +</div>
           </div>
           <div className={`${styles.statItem} fade-in`}>
             <div className={styles.statLabel}>Happy Clients</div>
-            <div className={styles.statValue}>30+</div>
+            <div className={styles.statValue}>30 +</div>
           </div>
         </div>
       </div>

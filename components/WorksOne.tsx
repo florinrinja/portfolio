@@ -1,42 +1,51 @@
-'use client'
+'use client';
 
-import { useEffect, useRef } from 'react'
-import styles from './Works.module.css'
+import { useEffect, useRef, useState } from 'react';
+import styles from './Works.module.css';
 
 type Work = {
-  number: string
-  category: string
-  title: string
-  description: string
-  url?: string
-  previewImage?: string
-}
+  number: string;
+  category: string;
+  title: string;
+  description: string;
+  longDescription?: string;
+  demoUrl?: string;
+  githubUrl?: string;
+  previewImage?: string;
+};
 
 const works: Work[] = [
   {
     number: '01',
     category: 'Weather Application',
-    title: 'Weather App',
+    title: 'Weather',
     description: 'A weather application showing current conditions and forecasts, built with React.',
-    url: '/apps/weather',
-    previewImage: '/works/weather-preview.png',
+    longDescription: 'A weather application showing current conditions and forecasts, built with React.',
+    demoUrl: '/apps/weather',
+    githubUrl: 'https://github.com/florinrinja/weather-app',
+    previewImage: '/works/weather.svg',
   },
   {
     number: '02',
-    category: 'E-Commerce',
-    title: 'Shop Platform',
-    description: 'Modern e-commerce platform with seamless checkout experience, inventory management, and responsive design.',
+    category: 'Health & Nutrition',
+    title: 'Scan Eat',
+    description: 'A barcode scanning app that instantly retrieves nutritional information for any food product.',
+    longDescription: 'A barcode scanning app that instantly retrieves nutritional information for any food product.',
+    githubUrl: 'https://github.com/florinrinja/yuka',
+    previewImage: '/works/scan-eat.svg',
   },
   {
     number: '03',
-    category: 'Portfolio',
-    title: 'Creative Portfolio',
-    description: 'Minimalist portfolio website showcasing photography and creative work with smooth animations and elegant typography.',
+    category: 'Cinema',
+    title: "phlo'ciné",
+    description: "A personal cinema diary tracking my own ratings and reviews — my take on what's worth watching.",
+    longDescription: "A personal cinema diary tracking my own ratings and reviews — my take on what's worth watching.",
   },
-]
+];
 
-export default function WorksOne() {
-  const sectionRef = useRef<HTMLElement>(null)
+const WorksOne = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [selectedWork, setSelectedWork] = useState<Work | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -44,17 +53,30 @@ export default function WorksOne() {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.querySelectorAll('.fade-in').forEach(el => {
-              el.classList.add('visible')
-            })
+              el.classList.add('visible');
+            });
           }
-        })
+        });
       },
       { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-    )
+    );
 
-    if (sectionRef.current) observer.observe(sectionRef.current)
-    return () => observer.disconnect()
-  }, [])
+    if (sectionRef.current) observer.observe(sectionRef.current);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (selectedWork) {
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.documentElement.style.overflow = '';
+    }
+
+    return () => {
+      document.documentElement.style.overflow = '';
+    }
+  }, [selectedWork]);
 
   return (
     <section id="works" className={styles.section} ref={sectionRef}>
@@ -62,9 +84,17 @@ export default function WorksOne() {
         <span className={styles.sectionNumber}>05</span>
         <h2 className={styles.sectionTitle}>Featured Works</h2>
       </div>
+
       <div className={styles.worksGrid}>
-        {works.map((work, index) => {
-          const imageArea = (
+        {works.map((work, index) => (
+          <div
+            key={index}
+            className={`${styles.workCard} fade-in`}
+            onClick={() => setSelectedWork(work)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => e.key === 'Enter' && setSelectedWork(work)}
+          >
             <div className={styles.workImage}>
               {work.previewImage ? (
                 <img
@@ -76,26 +106,75 @@ export default function WorksOne() {
                 work.number
               )}
             </div>
-          )
-
-          return (
-            <div key={index} className={`${styles.workCard} fade-in`}>
-              {work.url ? (
-                <a href={work.url} className={styles.workImageLink} target="_blank" rel="noopener noreferrer">
-                  {imageArea}
-                </a>
-              ) : (
-                imageArea
-              )}
-              <div className={styles.workContent}>
-                <div className={styles.workCategory}>{work.category}</div>
-                <h3 className={styles.workTitle}>{work.title}</h3>
-                <p className={styles.workDescription}>{work.description}</p>
-              </div>
+            <div className={styles.workContent}>
+              <div className={styles.workCategory}>{work.category}</div>
+              <h3 className={styles.workTitle}>{work.title}</h3>
+              <p className={styles.workDescription}>{work.description}</p>
             </div>
-          )
-        })}
+          </div>
+        ))}
       </div>
+
+      {selectedWork && (
+        <div
+          className={styles.modalOverlay}
+          onClick={() => setSelectedWork(null)}
+        >
+          <div
+            className={styles.modalPanel}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className={styles.modalClose}
+              onClick={() => setSelectedWork(null)}
+              aria-label="Close"
+            >
+              ✕
+            </button>
+
+            {selectedWork.previewImage && (
+              <img
+                src={selectedWork.previewImage}
+                alt={`${selectedWork.title} preview`}
+                className={styles.modalImage}
+              />
+            )}
+
+            <div className={styles.modalBody}>
+              <div className={styles.modalCategory}>{selectedWork.category}</div>
+              <h2 className={styles.modalTitle}>{selectedWork.title}</h2>
+              <p className={styles.modalDescription}>{selectedWork.longDescription}</p>
+
+              {(selectedWork.demoUrl || selectedWork.githubUrl) && (
+                <div className={styles.modalLinks}>
+                  {selectedWork.demoUrl && (
+                    <a
+                      href={selectedWork.demoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.modalLinkDemo}
+                    >
+                      Live demo
+                    </a>
+                  )}
+                  {selectedWork.githubUrl && (
+                    <a
+                      href={selectedWork.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.modalLinkGithub}
+                    >
+                      GitHub
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   )
-}
+};
+
+export default WorksOne;
