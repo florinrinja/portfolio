@@ -3,9 +3,12 @@
   --bg-secondary: #FFFFFF;
   --text-primary: #0A0A0A;
   --text-secondary: #666666;
+  --text-primary-button: #FFFFFF;
   --accent: #0A0A0A;
   --border: #E0E0E0;
   --shadow: rgba(0, 0, 0, 0.04);
+  --close-button: #CC1919;
+  --close-button-hover: #A10000;
 }
 
 [data-theme="dark"] {
@@ -13,9 +16,12 @@
   --bg-secondary: #1A1A1A;
   --text-primary: #F5F5F5;
   --text-secondary: #A0A0A0;
+  --text-primary-button: #000000;
   --accent: #F5F5F5;
   --border: #2A2A2A;
   --shadow: rgba(255, 255, 255, 0.03);
+  --close-button: #8b0000;
+  --close-button-hover: #a40000;
 }
 
 * {

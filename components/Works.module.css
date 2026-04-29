@@ -130,8 +130,8 @@
   position: absolute;
   top: 1rem;
   right: 1rem;
-  background: none;
-  border: 1px solid var(--border);
+  background: var(--close-button);
+  border: none;
   border-radius: 50%;
   width: 2rem;
   height: 2rem;
@@ -140,13 +140,13 @@
   justify-content: center;
   cursor: pointer;
   color: var(--text-primary);
-  font-size: 0.75rem;
+  font-size: 1rem;
   transition: background 0.15s ease, border-color 0.15s ease;
   z-index: 1;
 }
 
 .modalClose:hover {
-  background: var(--border);
+  background: var(--close-button-hover);
 }
 
 .modalImage {
@@ -208,7 +208,7 @@
 
 .modalLinkDemo {
   background: var(--accent);
-  color: #fff;
+  color: var(--text-primary-button);
 }
 
 .modalLinkGithub {
