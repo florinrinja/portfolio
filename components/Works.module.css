@@ -208,7 +208,7 @@
 
 .modalLinkDemo {
   background: var(--accent);
-  color: #fff;
+  color: var(--text-primary-button);
 }
 
 .modalLinkGithub {
