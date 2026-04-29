@@ -228,7 +228,7 @@
   to   { opacity: 1; transform: translateY(0)    scale(1);    }
 }
 
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   .workCard:hover .workImage {
     background: linear-gradient(135deg, var(--accent), var(--border));
     color: var(--bg-primary);

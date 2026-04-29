@@ -203,3 +203,21 @@
     display: flex;
   }
 }
+
+.nav {
+  transition: transform 0.5s ease;
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .nav.navHidden {
+    transform: translateY(-100%);
+  }
+
+  .navLinks li:first-child {
+    margin-left: 1rem;
+  }
+
+  .navLinks {
+    gap: 2rem;
+  }
+}
