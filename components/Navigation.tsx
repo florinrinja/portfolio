@@ -1,11 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import styles from './Navigation.module.css';
+import { useHideNavOnScroll } from '../hooks/useHideNavOnScroll';
 
 export default function Navigation() {
+  const navRef = useRef<HTMLElement>(null);
+
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [menuOpen, setMenuOpen] = useState(false);
+
+  useHideNavOnScroll(navRef, styles.navHidden);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
@@ -52,7 +57,7 @@ export default function Navigation() {
 
   return (
     <>
-      <nav className={styles.nav}>
+      <nav ref={navRef}  className={styles.nav}>
         <div className={styles.logo}>Florin RINJA</div>
 
         {/* Desktop links */}
